@@ -98,10 +98,9 @@ public class PersonalClubService implements IPersonalClubService {
         domicilioService.update(personalClubDTO.getDomicilio());
         datosContactoService.update(personalClubDTO.getDatosContacto());
         LOGGER.debug("Se actualizan datos contacto y domicilio: " + personalClubDTO);
-        personalBuscado = Optional.ofNullable(mapper.convertValue(personalClubDTO, PersonalClub.class));
-        if (!personalClubDTO.getClub().getId().equals(personalBuscado.get().getClub().getId())) {
-            Club club = mapper.convertValue(clubService.read(personalClubDTO.getClub().getId()), Club.class);
-            System.out.println(club);
+        Club club = mapper.convertValue(clubService.read(personalClubDTO.getClub().getId()), Club.class);
+        if(club!=null){
+            personalBuscado = Optional.ofNullable(mapper.convertValue(personalClubDTO, PersonalClub.class));
             personalBuscado.get().setClub(club);
             LOGGER.debug("Se actualiza el club del personal : " + personalBuscado.get());
         }
@@ -154,16 +153,24 @@ public class PersonalClubService implements IPersonalClubService {
     public void deleteClub(long id) throws ResourceNotFoundException {
         Optional<ClubDTO> club = Optional.ofNullable(clubService.read(id));
         if (club.isPresent()) {
-            Set<PersonalClubDTO> personalClubs = clubService.personalXClub(id);
-            for (PersonalClubDTO personalClubDTO : personalClubs) {
-                desvincularClub(personalClubDTO.getId());
+            try {
+                Set<PersonalClubDTO> personalClubs = clubService.personalXClub(id);
+                for (PersonalClubDTO personalClubDTO : personalClubs) {
+                    desvincularClub(personalClubDTO.getId());
+                }
+            } catch (ResourceNotFoundException ex) {
+                LOGGER.error("No hay personal");
             }
-            Set<JugadorDTO> jugadores = clubService.jugadorXClub(id);
-            for (JugadorDTO jugadorDTO : jugadores) {
-                jugadorService.desvincularClub(jugadorDTO.getId());
+            try {
+                Set<JugadorDTO> jugadores = clubService.jugadorXClub(id);
+                for (JugadorDTO jugadorDTO : jugadores) {
+                    jugadorService.desvincularClub(jugadorDTO.getId());
+                }
+            } catch (ResourceNotFoundException ex) {
+                LOGGER.error("No hay jugadores");
             }
             clubService.delete(id);
-        }else{
+        } else {
             LOGGER.error("Registro no encontrado : " + id);
             throw new ResourceNotFoundException("Registro no encontrado : " + id);
         }

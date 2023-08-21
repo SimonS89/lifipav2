@@ -9,6 +9,7 @@ import com.example.lifipav2.service.IPersonalClubService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -26,6 +27,7 @@ public class ClubController {
     }
 
     @PostMapping("/guardar")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> guardarClub(@Valid @RequestBody ClubDTO clubDTO) throws ResourceNotFoundException, AlreadyExistsException {
         clubService.create(clubDTO);
         return ResponseEntity.status(HttpStatus.OK).body("Registro ingresado correctamente");
@@ -53,9 +55,10 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.OK).body("Registro actualizado correctamente");
     }
 
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteClub(@PathVariable Long id) throws ResourceNotFoundException {
-//        clubService.delete(id);
         personalClubService.deleteClub(id);
         return ResponseEntity.status(HttpStatus.OK).body("Registro eliminado correctamente");
     }

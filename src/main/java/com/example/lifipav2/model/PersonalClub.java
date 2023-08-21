@@ -132,5 +132,4 @@ public class PersonalClub {
     public void setFechaInscripcion(LocalDate fechaInscripcion) {
         this.fechaInscripcion = fechaInscripcion;
     }
-
 }

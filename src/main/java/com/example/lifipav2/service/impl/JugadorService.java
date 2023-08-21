@@ -97,14 +97,13 @@ public class JugadorService implements IJugadorService {
     public void update(JugadorDTO jugadorDTO) throws ResourceNotFoundException {
         LOGGER.info("Llamado a updateJugador : " + jugadorDTO);
         Optional<Jugador> jugadorBuscado = jugadorRepository.findById(jugadorDTO.getId());
-        if (jugadorBuscado.isEmpty()) {
+        if (jugadorBuscado.isEmpty() ) {
             LOGGER.error("Registro no encontrado, id : " + jugadorDTO.getId());
             throw new ResourceNotFoundException("No se encontro jugador : " + jugadorDTO.getId());
         }
         datosContactoService.update(jugadorDTO.getDatosContacto());
-
-        if (!jugadorDTO.getClub().getId().equals(jugadorBuscado.get().getClub().getId())) {
-            Club club = mapper.convertValue(clubService.read(jugadorDTO.getClub().getId()), Club.class);
+        Club club = mapper.convertValue(clubService.read(jugadorDTO.getClub().getId()), Club.class);
+        if (club!=null) {
             jugadorDTO.setClub(mapper.convertValue(club, ClubPersonalDTO.class));
             LOGGER.debug("Se actualiza el club del jugador : " + jugadorBuscado.get());
         }

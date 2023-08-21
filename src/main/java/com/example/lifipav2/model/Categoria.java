@@ -28,6 +28,8 @@ public class Categoria {
     @JsonIgnore
     private Set<Club> clubes;
 
+    private int prueba;
+
     public Categoria() {
     }
 
@@ -36,6 +38,10 @@ public class Categoria {
         this.fechaHabilitada = fechaHabilitada;
         this.jugadores = jugadores;
         this.clubes = clubes;
+    }
+    public Categoria(Long id,String nombre) {
+        this.nombre = nombre;
+        this.id = id;
     }
 
     public Long getId() {
@@ -54,6 +60,7 @@ public class Categoria {
         return fechaHabilitada;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     public void setFechaHabilitada(LocalDate fechaHabilitada) {
         this.fechaHabilitada = fechaHabilitada;
     }

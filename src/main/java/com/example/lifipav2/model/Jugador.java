@@ -18,7 +18,6 @@ public class Jugador {
     @Column(name = "id_jugador")
     private Long id;
     private String nombre;
-
     private String apellido;
     @Column(unique = true)
     private String dni;

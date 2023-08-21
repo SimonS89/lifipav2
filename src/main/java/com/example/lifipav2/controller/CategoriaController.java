@@ -19,7 +19,6 @@ public class CategoriaController {
     private final ICategoriaService categoriaService;
 
     public CategoriaController(ICategoriaService categoriaService) {
-
         this.categoriaService = categoriaService;
     }
 

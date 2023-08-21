@@ -8,6 +8,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class JugadorDTO {
     private String dni;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @NotNull(message = "La fecha de nacimiento del jugador no puede ser nula")
+    @PastOrPresent(message = "Fecha incorrecta")
     private LocalDate fechaNacimiento;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaInscripcion;
@@ -73,6 +75,7 @@ public class JugadorDTO {
     public void setDatosContacto(DatosContacto datosContacto) {
         this.datosContacto = datosContacto;
     }
+
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -116,17 +119,6 @@ public class JugadorDTO {
 
     @Override
     public String toString() {
-        return "JugadorDTO{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", dni='" + dni + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", fechaInscripcion=" + fechaInscripcion +
-                ", genero=" + genero +
-                ", datosContacto=" + datosContacto +
-                ", club=" + club +
-                ", categoria=" + categoria +
-                '}';
+        return "JugadorDTO{" + "id=" + id + ", nombre='" + nombre + '\'' + ", apellido='" + apellido + '\'' + ", dni='" + dni + '\'' + ", fechaNacimiento=" + fechaNacimiento + ", fechaInscripcion=" + fechaInscripcion + ", genero=" + genero + ", datosContacto=" + datosContacto + ", club=" + club + ", categoria=" + categoria + '}';
     }
 }

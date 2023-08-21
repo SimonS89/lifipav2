@@ -119,6 +119,7 @@ public class CategoriaService implements ICategoriaService {
 
     @Override
     public Set<Categoria> validateCategories(List<Genero> generos) throws ResourceNotFoundException {
+        LOGGER.info("Llamado al metodo validateCategorias : "+generos);
         Set<Categoria> categorias;
         if (generos.contains(Genero.FEMENINO) || generos.contains(Genero.MASCULINO)) {
             Set<CategoriaDTO> categoriasDTO = this.readAll();
